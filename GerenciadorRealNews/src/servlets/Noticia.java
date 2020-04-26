@@ -21,8 +21,9 @@ import service.NoticiaService;
 public class Noticia extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected void service(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setContentType("text/html");
 		PrintWriter saida = response.getWriter();
 
 		String parameterId = request.getParameter("id") != null && !request.getParameter("id").isEmpty()
@@ -64,10 +65,13 @@ public class Noticia extends HttpServlet {
 
 			saida.println("<form method='post'>");
 			saida.println("<label>Adicionar comentário:</label>");
+			saida.println("<br>");
 			saida.println("<input type='hidden' name='idNoticia' value='" + id + "'>");
 			saida.println("<input type='text' name='nome' placeholder='Seu nome' required>");
+			saida.println("<br>");
 			saida.println("<textarea name='texto' placeholder='Seu comentário' required></textarea>");
-			saida.println("<input type='submit' value='Enviar'");
+			saida.println("<br>");
+			saida.println("<input type='submit' value='Enviar'>");
 			saida.println("</form>");
 		}
 	}
@@ -88,6 +92,8 @@ public class Noticia extends HttpServlet {
 		
 		ComentarioService comentarioService = new ComentarioService();
 		comentarioService.cadastrar(comentario);
+		
+		doGet(request, response);
 	}
 
 }
