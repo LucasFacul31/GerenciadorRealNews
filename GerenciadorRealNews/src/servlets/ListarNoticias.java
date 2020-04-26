@@ -20,7 +20,8 @@ import service.NoticiaService;
 public class ListarNoticias extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		NoticiaService noticiaService = new NoticiaService();
 		ArrayList<Noticia> noticias = noticiaService.listarNoticias();
 		PrintWriter saida = response.getWriter();
@@ -30,8 +31,9 @@ public class ListarNoticias extends HttpServlet {
 			saida.println("<p>Não há notícias cadastradas.</p>");
 		} else {
 			for (Noticia noticia : noticias) {
-				saida.println("<p><b>Id: </b>" + noticia.getId() + "</p>");
-				saida.println("<p><b>Título: </b>" + noticia.getTitulo() + "</p>");
+				saida.println("<p><b>Id: </b><a href='Noticia.do?id=" + noticia.getId() + "'>" + noticia.getId()
+						+ "</a></p>");
+				saida.println("<p><b>Título: </b><a href='Noticia.do?id=" + noticia.getId() + "'>" + noticia.getTitulo() + "</a></p>");
 				saida.println("<p><b>Descrição: </b>" + noticia.getDescricao() + "</p>");
 				saida.println("<p><b>Texto: </b>" + noticia.getTexto() + "</p>");
 				saida.println("<hr>");

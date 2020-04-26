@@ -57,9 +57,6 @@ public class ExcluirNoticia extends HttpServlet {
 		saida.println("<a href=\"ExcluirNoticia.jsp\">Excluir notícia</a>");
 		saida.println("<br>");
 		saida.println("<br>");
-		saida.println("<a href=\"ConsultarNoticia.jsp\">Consultar notícia</a>");
-		saida.println("<br>");
-		saida.println("<br>");
 		saida.println("<a href=\"ListarNoticias.do\">Listar notícias</a>");
 	}
 

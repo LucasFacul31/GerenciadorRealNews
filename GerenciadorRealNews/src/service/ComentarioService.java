@@ -8,7 +8,7 @@ import model.Comentario;
 public class ComentarioService {
 	private ComentarioDAO comentarioDAO;
 	
-	ComentarioService(){
+	public ComentarioService(){
 		this.comentarioDAO = new ComentarioDAO();
 	}
 

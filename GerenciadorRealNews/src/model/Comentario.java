@@ -40,8 +40,8 @@ public class Comentario implements java.io.Serializable {
 		return idNoticia;
 	}
 
-	public void setIdNoticia(int id_noticia) {
-		this.idNoticia = id_noticia;
+	public void setIdNoticia(int idNoticia) {
+		this.idNoticia = idNoticia;
 	}
 
 	// Get/Set nome
