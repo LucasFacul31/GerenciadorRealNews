@@ -13,10 +13,10 @@ import model.Noticia;
 import service.NoticiaService;
 
 /**
- * Servlet implementation class CadastrarNoticia
+ * Servlet implementation class AlterarNoticia
  */
-@WebServlet(name = "CadastrarNoticia.do", urlPatterns = { "/CadastrarNoticia.do" })
-public class CadastrarNoticia extends HttpServlet {
+@WebServlet(name = "AlterarNoticia.do", urlPatterns = { "/AlterarNoticia.do" })
+public class AlterarNoticia extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -27,41 +27,54 @@ public class CadastrarNoticia extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		PrintWriter saida = response.getWriter();
-		
-		String titulo = request.getParameter("titulo"),
-				descricao = request.getParameter("descricao"),
+
+		int id = Integer.parseInt(request.getParameter("id"));
+		String titulo = request.getParameter("titulo"), descricao = request.getParameter("descricao"),
 				texto = request.getParameter("texto");
+
+		if (id <= 0) {
+			saida.println("<h1>Volte e informe o id!</h1>");
+			saida.println("<br>");
+			saida.println("<a href='AlterarNoticia.jsp'>Voltar</a>");
+			return;
+		}
 
 		if (titulo == "" || titulo == null || titulo.length() <= 0 || titulo.isEmpty()) {
 			saida.println("<h1>Volte e informe o título!</h1>");
 			saida.println("<br>");
-			saida.println("<a href='CadastrarNoticia.jsp'>Voltar</a>");
+			saida.println("<a href='AlterarNoticia.jsp'>Voltar</a>");
 			return;
 		}
 
 		if (descricao == "" || descricao == null || descricao.length() <= 0 || descricao.isEmpty()) {
 			saida.println("<h1>Volte e informe a descrição!</h1>");
 			saida.println("<br>");
-			saida.println("<a href='CadastrarNoticia.jsp'>Voltar</a>");
+			saida.println("<a href='AlterarNoticia.jsp'>Voltar</a>");
 			return;
 		}
 
 		if (texto == "" || texto == null || texto.length() <= 0 || texto.isEmpty()) {
 			saida.println("<h1>Volte e informe o texto!</h1>");
 			saida.println("<br>");
-			saida.println("<a href='CadastrarNoticia.jsp'>Voltar</a>");
+			saida.println("<a href='AlterarNoticia.jsp'>Voltar</a>");
 			return;
 		}
 
 		Noticia noticia = new Noticia();
+		noticia.setId(id);
 		noticia.setTitulo(titulo);
 		noticia.setDescricao(descricao);
 		noticia.setTexto(texto);
 
 		NoticiaService noticiaService = new NoticiaService();
-		noticiaService.cadastrar(noticia);
+		Noticia existe = noticiaService.consultar(id);
 
-		saida.println("<h1>Notícia cadastrada com sucesso!</h1>");
+		if (!existe.isValid()) {
+			saida.println("<h1>Notícia não encontrada.</h1>");
+		} else {
+			noticiaService.alterar(noticia);
+			saida.println("<h1>Notícia alterada com sucesso!</h1>");
+		}
 
 		saida.println("<a href=\"CadastrarNoticia.jsp\">Cadastrar notícia</a>");
 		saida.println("<br>");

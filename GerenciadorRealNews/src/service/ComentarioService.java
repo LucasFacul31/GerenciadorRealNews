@@ -24,8 +24,8 @@ public class ComentarioService {
 		this.comentarioDAO.excluir(comentario);
 	}
 
-	public Comentario consultar(int matricula) {
-		return this.comentarioDAO.consultar(matricula);
+	public Comentario consultar(int id) {
+		return this.comentarioDAO.consultar(id);
 	}
 
 	public ArrayList<Comentario> listarComentarios() {

@@ -24,8 +24,8 @@ public class NoticiaService {
 		this.noticiaDAO.excluir(noticia);
 	}
 
-	public Noticia consultar(int matricula) {
-		return this.noticiaDAO.consultar(matricula);
+	public Noticia consultar(int id) {
+		return this.noticiaDAO.consultar(id);
 	}
 
 	public ArrayList<Noticia> listarNoticias() {
