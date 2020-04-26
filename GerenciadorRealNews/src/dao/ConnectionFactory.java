@@ -23,7 +23,7 @@ public class ConnectionFactory {
 			String database = "portal_realnews";
 
 			String url = "jdbc:mysql://" + server + "/" + database;
-			
+
 			String parameters = "?useTimezone=true&serverTimezone=UTC";
 
 			String username = "root";
