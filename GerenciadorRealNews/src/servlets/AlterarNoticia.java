@@ -33,7 +33,7 @@ public class AlterarNoticia extends HttpServlet {
 				texto = request.getParameter("texto");
 
 		if (id <= 0) {
-			saida.println("<h1>Volte e informe o id!</h1>");
+			saida.println("<h1>Volte e informe um id válido!</h1>");
 			saida.println("<br>");
 			saida.println("<a href='AlterarNoticia.jsp'>Voltar</a>");
 			return;
