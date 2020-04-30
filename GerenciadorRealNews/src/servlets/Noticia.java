@@ -1,5 +1,5 @@
 package servlets;
-
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -20,11 +20,30 @@ import service.NoticiaService;
 @WebServlet(name = "Noticia.do", urlPatterns = { "/Noticia.do" })
 public class Noticia extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	
+	 @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.setContentType("text/html");
-		PrintWriter saida = response.getWriter();
+		 
+
+			String nome = request.getParameter("nome"),
+					texto = request.getParameter("texto"),
+					parameterIdNoticia = request.getParameter("idNoticia") != null && !request.getParameter("idNoticia").isEmpty()
+							? request.getParameter("idNoticia")
+									: "-1";
+			int idNoticia = Integer.parseInt(parameterIdNoticia);
+
+			Comentario comentario = new Comentario();
+			comentario.setIdNoticia(idNoticia);
+			comentario.setNome(nome);
+			comentario.setTexto(texto);
+			
+			if(comentario.isValid()) {
+				ComentarioService comentarioService = new ComentarioService();
+				comentarioService.cadastrar(comentario);
+			}
+		 
+		PrintWriter out = response.getWriter();
 
 		String parameterId = request.getParameter("id") != null && !request.getParameter("id").isEmpty()
 				? request.getParameter("id")
@@ -32,7 +51,7 @@ public class Noticia extends HttpServlet {
 		int id = Integer.parseInt(parameterId);
 
 		if (id <= 0) {
-			saida.println("<h1>Notícia não encontrada.</h1>");
+			out.println("<h1>Notícia não encontrada.</h1>");
 			return;
 		}
 
@@ -40,60 +59,43 @@ public class Noticia extends HttpServlet {
 		model.Noticia resultado = noticiaService.consultar(id);
 
 		if (!resultado.isValid()) {
-			saida.println("<h1>Notícia não encontrada.</h1>");
+			out.println("<h1>Notícia não encontrada.</h1>");
 		} else {
-			saida.println("<h2>RealNews<h2>");
-			saida.println("<hr>");
-			saida.println("<h1>" + resultado.getTitulo() + "</h1>");
-			saida.println("<h3>" + resultado.getDescricao() + "</h3>");
-			saida.println("<p>" + resultado.getTexto() + "</p>");
-			saida.println("<hr>");
-			saida.println("<h4>Comentários</h4>");
-
 			ComentarioService comentarioService = new ComentarioService();
 			ArrayList<Comentario> comentarios = comentarioService.listarComentariosNoticia(id);
-
-			if (comentarios.isEmpty()) {
-				saida.println("<p>Nenhum comentário.</p>");
-			} else {
-				for (Comentario comentario : comentarios) {
-					saida.println("<h5>" + comentario.getNome() + "</h5>");
-					saida.println("<p>" + comentario.getTexto() + "</p>");
-					saida.println("<hr>");
-				}
-			}
-
-			saida.println("<form method='post'>");
-			saida.println("<label>Adicionar comentário:</label>");
-			saida.println("<br>");
-			saida.println("<input type='hidden' name='idNoticia' value='" + id + "'>");
-			saida.println("<input type='text' name='nome' placeholder='Seu nome' required>");
-			saida.println("<br>");
-			saida.println("<textarea name='texto' placeholder='Seu comentário' required></textarea>");
-			saida.println("<br>");
-			saida.println("<input type='submit' value='Enviar'>");
-			saida.println("</form>");
+			resultado.setComentario(comentarios);
+			
+			 String json = new Gson().toJson(resultado);
+			 setAccessControlHeaders(response);
+		     response.setContentType("application/json");
+		     response.setCharacterEncoding("UTF-8");
+		     out.print(json);
+		     out.flush(); 
 		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String nome = request.getParameter("nome"),
-				texto = request.getParameter("texto"),
-				parameterIdNoticia = request.getParameter("idNoticia") != null && !request.getParameter("idNoticia").isEmpty()
-						? request.getParameter("idNoticia")
-								: "-1";
-		int idNoticia = Integer.parseInt(parameterIdNoticia);
-
-		Comentario comentario = new Comentario();
-		comentario.setIdNoticia(idNoticia);
-		comentario.setNome(nome);
-		comentario.setTexto(texto);
-		
-		ComentarioService comentarioService = new ComentarioService();
-		comentarioService.cadastrar(comentario);
+		setAccessControlHeaders(response);
 		
 		doGet(request, response);
 	}
+	
+	  //for Preflight
+	  @Override
+	  protected void doOptions(HttpServletRequest req, HttpServletResponse resp)
+	          throws ServletException, IOException {
+	      setAccessControlHeaders(resp);
+	      resp.setStatus(HttpServletResponse.SC_OK);
+	  }
+	  
+	  
+
+	  private void setAccessControlHeaders(HttpServletResponse resp) {
+	      resp.setHeader("Access-Control-Allow-Origin", "*");
+	      resp.setHeader("Access-Control-Allow-Methods", "*");
+	  }
+
+	
 
 }

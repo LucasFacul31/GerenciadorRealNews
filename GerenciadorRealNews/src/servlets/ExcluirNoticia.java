@@ -19,10 +19,6 @@ import service.NoticiaService;
 public class ExcluirNoticia extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter saida = response.getWriter();
 
@@ -48,16 +44,16 @@ public class ExcluirNoticia extends HttpServlet {
 			saida.println("<h1>Notícia excluída com sucesso!</h1>");
 		}
 
-		saida.println("<a href=\"CadastrarNoticia.jsp\">Cadastrar notícia</a>");
+		saida.println("<a href=\"cadastrar.html\">Cadastrar notícia</a>");
 		saida.println("<br>");
 		saida.println("<br>");
-		saida.println("<a href=\"AlterarNoticia.jsp\">Alterar notícia</a>");
+		saida.println("<a href=\"alterar.html\">Alterar notícia</a>");
 		saida.println("<br>");
 		saida.println("<br>");
-		saida.println("<a href=\"ExcluirNoticia.jsp\">Excluir notícia</a>");
+		saida.println("<a href=\"excluir.html\">Excluir notícia</a>");
 		saida.println("<br>");
 		saida.println("<br>");
-		saida.println("<a href=\"ListarNoticias.do\">Listar notícias</a>");
+		saida.println("<a href=\"http://localhost:8081\">Listar notícias</a>");
 	}
 
 }

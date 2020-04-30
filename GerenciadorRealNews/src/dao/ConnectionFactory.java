@@ -10,15 +10,17 @@ public class ConnectionFactory {
 		try {
 			System.out.println("Procurando o driver...");
 			Class.forName("com.mysql.cj.jdbc.Driver");
+			//Class.forName("com.mysql.jdbc.Driver");
 			System.out.println("Driver encontrado com sucesso!");
 		} catch (ClassNotFoundException ex) {
 			System.err.println("O driver não foi encontrado.");
+			System.out.println(ex);
 		}
 	}
 
 	public static Connection conectar() {
 		try {
-			String server = "localhost";
+			String server = "127.0.0.1:3306";
 
 			String database = "portal_realnews";
 
@@ -26,9 +28,9 @@ public class ConnectionFactory {
 
 			String parameters = "?useTimezone=true&serverTimezone=UTC";
 
-			String username = "root";
+			String username = "admin";
 
-			String password = "";
+			String password = "@Mpx458mg9";
 			return DriverManager.getConnection(url + parameters, username, password);
 		} catch (SQLException ex) {
 			System.err.println("Não foi possível conectar!");

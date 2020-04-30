@@ -1,4 +1,5 @@
 package servlets;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,39 +21,42 @@ import service.NoticiaService;
 public class ListarNoticias extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected void service(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		NoticiaService noticiaService = new NoticiaService();
-		ArrayList<Noticia> noticias = noticiaService.listarNoticias();
-		PrintWriter saida = response.getWriter();
+	//protected void service(HttpServletRequest request, HttpServletResponse response)
+	//		throws ServletException, IOException {
+//
+	//}
+	
 
-		saida.println("<h1>Notícias:</h1>");
-		if (noticias.isEmpty()) {
-			saida.println("<p>Não há notícias cadastradas.</p>");
-		} else {
-			for (Noticia noticia : noticias) {
-				saida.println("<p><b>Id: </b><a href='Noticia.do?id=" + noticia.getId() + "'>" + noticia.getId()
-						+ "</a></p>");
-				saida.println("<p><b>Título: </b><a href='Noticia.do?id=" + noticia.getId() + "'>" + noticia.getTitulo() + "</a></p>");
-				saida.println("<p><b>Descrição: </b>" + noticia.getDescricao() + "</p>");
-				saida.println("<p><b>Texto: </b>" + noticia.getTexto() + "</p>");
-				saida.println("<hr>");
+	  @Override
+	  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	          throws ServletException, IOException {
+			NoticiaService noticiaService = new NoticiaService();
+			ArrayList<Noticia> noticias = noticiaService.listarNoticias();
+			PrintWriter saida = resp.getWriter();
+			if (noticias.isEmpty()) {
+				saida.println("<p>Não há notícias cadastradas.</p>");
+			} else {
+		        String json = new Gson().toJson(noticias);
+		        PrintWriter out = resp.getWriter();
+		        setAccessControlHeaders(resp);
+		        resp.setContentType("application/json");
+		        resp.setCharacterEncoding("UTF-8");
+		        out.print(json);
+		        out.flush(); 
 			}
-		}
+	  }
 
-		saida.println("<a href=\"CadastrarNoticia.jsp\">Cadastrar notícia</a>");
-		saida.println("<br>");
-		saida.println("<br>");
-		saida.println("<a href=\"AlterarNoticia.jsp\">Alterar notícia</a>");
-		saida.println("<br>");
-		saida.println("<br>");
-		saida.println("<a href=\"ExcluirNoticia.jsp\">Excluir notícia</a>");
-		saida.println("<br>");
-		saida.println("<br>");
-		saida.println("<a href=\"ConsultarNoticia.jsp\">Consultar notícia</a>");
-		saida.println("<br>");
-		saida.println("<br>");
-		saida.println("<a href=\"ListarNoticias.do\">Listar notícias</a>");
-	}
+	  //for Preflight
+	  @Override
+	  protected void doOptions(HttpServletRequest req, HttpServletResponse resp)
+	          throws ServletException, IOException {
+	      setAccessControlHeaders(resp);
+	      resp.setStatus(HttpServletResponse.SC_OK);
+	  }
+
+	  private void setAccessControlHeaders(HttpServletResponse resp) {
+	      resp.setHeader("Access-Control-Allow-Origin", "*");
+	      resp.setHeader("Access-Control-Allow-Methods", "GET");
+	  }
 
 }

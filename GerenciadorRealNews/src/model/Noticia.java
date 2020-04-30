@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Noticia implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -9,6 +11,7 @@ public class Noticia implements java.io.Serializable {
 	private String titulo;
 	private String descricao;
 	private String texto;
+	private ArrayList<Comentario> comentario;
 
 	// Constructors
 	public Noticia() {
@@ -60,6 +63,14 @@ public class Noticia implements java.io.Serializable {
 
 	public void setTexto(String texto) {
 		this.texto = texto;
+	}
+
+	public ArrayList<Comentario> getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(ArrayList<Comentario> comentario) {
+		this.comentario = comentario;
 	}
 
 }

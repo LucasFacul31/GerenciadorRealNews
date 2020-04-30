@@ -23,7 +23,7 @@ public class Comentario implements java.io.Serializable {
 
 	// Check if is a valid Comentario
 	public boolean isValid() {
-		return this.id != -1 && this.idNoticia != -1 && this.nome != null && this.texto != null;
+		return this.idNoticia != -1 && this.nome != null && this.texto != null;
 	}
 
 	// Get/Set id
