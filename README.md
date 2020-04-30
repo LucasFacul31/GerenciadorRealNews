@@ -8,8 +8,6 @@ Trabalho D1 - Desenvolvimento de um novo sistema para o portal de notícias Real
 > 3º Executar o projeto em um servidor TomCat igual ou superior à versão 8.0.
 
 
-Desenvolvido por:
-
-Lucas Lopes Guimarães - 819162764
-
+Desenvolvido por:<br>
+Lucas Lopes Guimarães - 819162764<br>
 Alex Victor Souza de Oliveira - 819154560
